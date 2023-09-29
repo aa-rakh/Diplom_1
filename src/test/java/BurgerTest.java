@@ -1,3 +1,4 @@
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -16,13 +17,14 @@ public class BurgerTest {
     @Mock
     private Ingredient ingredientFilling;
 
+    Burger burger = new Burger();
+
     public BurgerTest() {
 
     }
 
     @Test
     public void getReceiptTest(){
-        Burger burger = new Burger();
         burger.setBuns(bun);
         burger.addIngredient(ingredientSauce);
         burger.addIngredient(ingredientFilling);
@@ -39,4 +41,20 @@ public class BurgerTest {
         System.out.println(burger.getReceipt());
         assertEquals(expectedResult, burger.getReceipt());
     }
+
+    @Test
+    public void getPrice() {
+        Mockito.when(bun.getPrice()).thenReturn(100F);
+        Mockito.when(ingredientFilling.getPrice()).thenReturn(200F);
+        burger.setBuns(bun);
+        burger.addIngredient(ingredientFilling);
+        Assert.assertEquals("Стоимость посчитана неверно!", 400, burger.getPrice(), 0.01f);
+    }
+
+    @Test
+    public void setBunsTest() {
+        burger.setBuns(bun);
+        assertEquals("Булка добавлена!", bun, burger.bun);
+    }
+
 }
